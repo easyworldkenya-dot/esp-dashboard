@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ESP Counter</title>
+</head>
+
+<body>
+
+<div style="background-color: aqua; padding: 13px; color: brown; width: 60%; margin: auto; text-align: center;">   <!--Wrap (CONTENT) in a <div> and style it:-->
+  <h1>EWED WEBSOCKET TEST WITH ESP32</h1>
+</div>
+
+<br>			<!-- enter downward -->
+
+<div style="background-color: fuchsia; padding: 10px; color: navy; width: 60%; margin: auto; text-align: center;">     <!--Wrap (CONTENT) in a <div> and style it:-->
+  <h1>Developed by Chege Maina</h1>
+</div>
+
+<br>			<!-- enter downward -->
+
+                <!-- <h1>Counter: <span id="counter">0</span></h1>  -->
+ 
+<div style="background-color: rgb(255, 166, 0); padding: 10px; color: rgb(255, 255, 255); width: 50%; ">  
+   <h1>Counter: <span id="counter">0</span></h1>
+</div>
+
+ <br>
+
+<div style="background-color: rgb(0, 255, 21); padding: 10px; color: white; width: 50%; ">  
+   <h1>Temperature: <span id="temp">0</span></h1>
+</div>
+
+<br>
+
+<div style="background-color: blue; padding: 10px; color: white; width: 50%; ">  
+   <h1>Humidity: <span id="hum">0</span></h1>
+</div>
+
+<br>			<!-- enter downward -->
+<br>
+<br>
+
+<!-- 👉 NEW: Buttons -->
+<!-- <button onclick="sendCommand('ON')">Turn ON</button>  -->
+<!-- <button onclick="sendCommand('OFF')">Turn OFF</button>  -->
+
+
+
+  <button onclick="sendCommand('PUMPON')" style="background-color: rgb(11, 206, 53); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"> Pump ON
+  </button>
+    &nbsp;&nbsp;			<!-- space foward -->
+  <button onclick="sendCommand('PUMPOFF')" style="background-color: rgb(255, 60, 0); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"> Pump OFF
+  </button>
+
+    <br>
+    <br>
+  
+  <button onclick="sendCommand('LAMPON')" style="background-color: blue; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"> Lamp ON
+  </button>
+
+   &nbsp;&nbsp;&nbsp;			<!-- space foward -->
+
+  <button onclick="sendCommand('LAMPOFF')" style="background-color: rgb(255, 145, 0); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"> Lamp OFF
+  </button>
+
+    <br>
+    <br>
+
+  <button onclick="sendCommand('ALARMON')" style="background-color: rgb(45, 0, 128); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"> Alarm ON
+  </button>
+
+   &nbsp;&nbsp;&nbsp;			<!-- space foward -->
+
+  <button onclick="sendCommand('ALARMOFF')" style="background-color: rgb(255, 0, 242); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"> Alarm OFF
+  </button>
+
+  <br>
+  <br>
+  
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+<script>
+  //const ws = new WebSocket("ws://192.168.100.106:81/");  
+  
+        const client = mqtt.connect("wss://broker.hivemq.com:8884/mqtt");
+
+        const pub_topic = "chege123/home/control";
+        const sub_topic = "chege123/home/data";
+
+        client.on("connect", () => {
+        console.log("Connected");
+        client.subscribe(sub_topic);
+        });
+
+        client.on("message", (topic, message) => {
+        let data = message.toString().split(",");
+
+        document.getElementById("counter").textContent = data[0];
+        document.getElementById("temp").textContent = data[1];
+        document.getElementById("hum").textContent = data[2];
+        });
+
+        function sendCommand(cmd) {
+        client.publish(pub_topic, cmd);
+        }
+    </script>
+</body>
+</html>
