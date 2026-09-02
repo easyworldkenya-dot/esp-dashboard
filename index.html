@@ -1,107 +1,208 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ESP Counter</title>
+  <title>ESP Counter</title>  
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>  <!-- MQTT JavaScript library.  -->
+    <!-- loads the MQTT.js library into your webpage. -->
 </head>
 
-<body>
+<body style="background-color: rgb(174, 200, 224); ">
 
-<div style="background-color: aqua; padding: 13px; color: brown; width: 60%; margin: auto; text-align: center;">   <!--Wrap (CONTENT) in a <div> and style it:-->
-  <h1>EWED WEBSOCKET TEST WITH ESP32</h1>
+<div style="background-color: aqua; padding: 13px; color: brown; width: 90%; margin: auto; text-align: center; border: 4px solid rgb(58, 10, 104);">   <!--Wrap (CONTENT) in a <div> and style it:-->
+  <h1>EWED ESP32 MQTT DASHBOARD</h1>
 </div>
 
-<br>			<!-- enter downward -->
-
-<div style="background-color: fuchsia; padding: 10px; color: navy; width: 60%; margin: auto; text-align: center;">     <!--Wrap (CONTENT) in a <div> and style it:-->
-  <h1>Developed by Chege Maina</h1>
+<div style="background-color: fuchsia; padding: 13px; color: rgb(9, 9, 58); width: 90%; margin: auto; text-align: center; border: 4px solid rgb(146, 4, 189);">     <!--Wrap (CONTENT) in a <div> and style it:-->
+  <h1 style="font-family: Times New Roman; font-size: 30px; font-weight: bold; font-style: italic;" >Developed by Chege Maina</h1>
 </div>
 
-<br>			<!-- enter downward -->
+<br>      <!-- enter downward -->  
+
+<hr style="width: 98%; border: 3px solid rgb(153, 3, 3);"> 
+
+<br>      <!-- enter downward -->
+<br>      <!-- enter downward -->
+
 
                 <!-- <h1>Counter: <span id="counter">0</span></h1>  -->
+   
+      <div style="background-color: rgb(174, 206, 177); padding: 10px; color: rgb(15, 1, 6); width: 30%; border: 3px solid black; margin-left: 100px;">    <!--<div style="background-color: rgb(255, 145, 0); padding: 10px; color: white; width: 50%; "> --> 
+        <h1 style="font-family: Times New Roman; font-size: 30px; font-weight: bold;"> Counter: <span id="counter">0</span></h1>
+      </div>
+
+      <br>      <!-- enter downward -->
+
+      <div style="background-color: rgb(228, 208, 143); padding: 10px; color: rgb(46, 6, 6); width: 30%; border: 3px solid rgb(82, 7, 7); margin-left: 100px;">  
+          <!--Wrap (<h1>Counter: <span id="counter">0</span></h1>) in a <div> and style it:-->
+      <h1 style="font-family: Times New Roman; font-size: 30px; font-weight: bold; font-style: italic;">Temperature: <span id="temp">0</span></h1>
+      </div>
+                      //Div - What the user sees
+
+      <br>      <!-- enter downward -->
+
+      <div style="background-color: rgba(201, 192, 200, 0.993); padding: 10px; color: rgb(245, 10, 61); width: 30%; border: 3px solid black; margin-left: 100px;">  
+          <!--Wrap (<h1>Counter: <span id="counter">0</span></h1>) in a <div> and style it:-->
+      <h1 style="font-family: Times New Roman; font-size: 30px; font-weight: normal; font-style: italic;">Humidity: <span id="hum">0</span></h1>
+      </div>
+              //span - Where values appear
+
+      <br>      <!-- enter downward -->
+      <br>
+      <hr style="width: 98%; border: 3px solid rgb(126, 4, 163);">    <!-- horizontal line -->
+
+
+                                    <!-- PUMP -->
+   <div style="color: rgb(4, 21, 77); margin-left: 300px;">     <!--Wrap (CONTENT) in a <div> and style it:-->
+      <h1 style="font-family: Times New Roman; font-size: 30px; font-weight: bold; " >PUMP SWITCHING</h1>
+   </div>                              
+  <br>      <!-- enter downward -->
+  <button onclick="sendCommand('PUMP ON')" style="background-color: rgb(226, 137, 65); color: rgb(20, 4, 77); padding: 30px 50px; border: none; border-radius: 5px; cursor: pointer; margin-left: 100px; font-family: Times New Roman; font-size: 30px; font-weight: bold "> Turn on
+  </button>
+                  //Button - What the user can click
+
+        <!-- &nbsp;&nbsp; space foward -->
+  <button onclick="sendCommand('PUMP OFF')" style="background-color: rgb(157, 157, 212); color: rgb(109, 4, 4); padding: 30px 50px; border: none; border-radius: 5px; cursor: pointer; margin-left: 100px; font-family: Times New Roman; font-size: 30px; font-weight: bold"> Turn off
+  </button>
+
+        <br>
+        <br>
+       <!-- <div style="background-color: rgba(107, 79, 79, 0.993); padding: 10px; color: rgb(9, 237, 245); width: 30%; border: 3px solid black; margin-left: 100px;">  -->
+        <div id="pumpPad" style="background-color: rgba(107, 79, 79, 0.993); padding: 10px; color: rgb(23, 7, 82); width: 30%; border: 3px solid black; margin-left: 100px;">
+           <h1 style="font-family: Times New Roman; font-size: 30px; font-weight: normal; font-style: italic;">Pump <span id="pmp"> </span></h1>
+        </div> 
+            
+
+            
+
+  <br>      <!-- enter downward -->
+      <hr style="width: 98%; border: 3px solid rgba(247, 4, 24, 0.952);"> 
+  <br>
+  <br>
  
-<div style="background-color: rgb(255, 166, 0); padding: 10px; color: rgb(255, 255, 255); width: 50%; ">  
-   <h1>Counter: <span id="counter">0</span></h1>
-</div>
-
- <br>
-
-<div style="background-color: rgb(0, 255, 21); padding: 10px; color: white; width: 50%; ">  
-   <h1>Temperature: <span id="temp">0</span></h1>
-</div>
-
-<br>
-
-<div style="background-color: blue; padding: 10px; color: white; width: 50%; ">  
-   <h1>Humidity: <span id="hum">0</span></h1>
-</div>
-
-<br>			<!-- enter downward -->
-<br>
-<br>
-
-<!-- 👉 NEW: Buttons -->
-<!-- <button onclick="sendCommand('ON')">Turn ON</button>  -->
-<!-- <button onclick="sendCommand('OFF')">Turn OFF</button>  -->
-
-
-
-  <button onclick="sendCommand('PUMPON')" style="background-color: rgb(11, 206, 53); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"> Pump ON
-  </button>
-    &nbsp;&nbsp;			<!-- space foward -->
-  <button onclick="sendCommand('PUMPOFF')" style="background-color: rgb(255, 60, 0); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"> Pump OFF
-  </button>
-
-    <br>
-    <br>
+                                    <!-- LAMPS -->
+ <div style="color: rgb(211, 15, 64); margin-left: 300px;">     <!--Wrap (CONTENT) in a <div> and style it:-->
+      <h1 style="font-family: Times New Roman; font-size: 30px; font-weight: bold; " >LAMPS SWITCHING</h1>
+ </div>                              
+  <br>      <!-- enter downward -->
   
-  <button onclick="sendCommand('LAMPON')" style="background-color: blue; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"> Lamp ON
+  <button onclick="sendCommand('LAMP ON')" style="background-color: rgb(231, 162, 106); color: rgb(20, 4, 77); padding: 30px 50px; border: none; border-radius: 5px; cursor: pointer; margin-left: 100px; font-family: Times New Roman; font-size: 30px; font-weight: bold "> Turn on
   </button>
 
-   &nbsp;&nbsp;&nbsp;			<!-- space foward -->
-
-  <button onclick="sendCommand('LAMPOFF')" style="background-color: rgb(255, 145, 0); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"> Lamp OFF
+        <!-- &nbsp;&nbsp; space foward -->
+  <button onclick="sendCommand('LAMP OFF')" style="background-color: rgb(114, 114, 231); color: rgb(109, 4, 4); padding: 30px 50px; border: none; border-radius: 5px; cursor: pointer; margin-left: 100px; font-family: Times New Roman; font-size: 30px; font-weight: bold"> Turn off
   </button>
 
-    <br>
-    <br>
+        <br>
+        <br>
+        <!-- <div style="background-color: rgba(65, 63, 63, 0.993); padding: 10px; color: rgb(9, 237, 245); width: 30%; border: 3px solid black; margin-left: 100px;">  -->
+        <div id="lampPad" style="background-color: rgba(65, 63, 63, 0.993); padding: 10px; color: rgb(23, 7, 82); width: 30%; border: 3px solid black; margin-left: 100px;">
+          <h1 style="font-family: Times New Roman; font-size: 30px; font-weight: normal; font-style: italic;">Lamps <span id="lmp"> </span></h1>
+        </div> 
+          
 
-  <button onclick="sendCommand('ALARMON')" style="background-color: rgb(45, 0, 128); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"> Alarm ON
-  </button>
+         
 
-   &nbsp;&nbsp;&nbsp;			<!-- space foward -->
-
-  <button onclick="sendCommand('ALARMOFF')" style="background-color: rgb(255, 0, 242); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"> Alarm OFF
-  </button>
-
+  <br>      <!-- enter downward -->
+     <hr style="width: 98%; border: 3px solid rgba(247, 4, 24, 0.952);"> 
   <br>
   <br>
-  
-  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+
+
+                                    <!-- HUMIDIFIER -->
+ <div style="color: rgb(77, 4, 55); margin-left: 300px;">     <!--Wrap (CONTENT) in a <div> and style it:-->
+     <h1 style="font-family: Times New Roman; font-size: 30px; font-weight: bold; " >HUMIDIFIER SWITCHING</h1>
+  </div>                              
+  <br>      <!-- enter downward -->
+  <button onclick="sendCommand('HUMD ON')" style="background-color: rgb(224, 113, 22); color: rgb(47, 9, 185); padding: 30px 50px; border: none; border-radius: 5px; cursor: pointer; margin-left: 100px; font-family: Times New Roman; font-size: 30px; font-weight: bold "> Turn on
+  </button>
+
+        <!-- &nbsp;&nbsp; space foward -->
+  <button onclick="sendCommand('HUMD OFF')" style="background-color: rgb(130, 130, 216); color: rgb(109, 4, 4); padding: 30px 50px; border: none; border-radius: 5px; cursor: pointer; margin-left: 100px; font-family: Times New Roman; font-size: 30px; font-weight: bold"> Turn off
+  </button>
+
+        <br>
+        <br>
+        <div id="humidifierPad" style="background-color: rgba(143, 129, 129, 0.993); padding: 10px; color: rgb(23, 7, 82); width: 30%; border: 3px solid black; margin-left: 100px;">
+       <!-- <div style="background-color: rgba(143, 129, 129, 0.993); padding: 10px; color: rgb(9, 237, 245); width: 30%; border: 3px solid black; margin-left: 100px;">  -->
+            <h1 style="font-family: Times New Roman; font-size: 30px; font-weight: normal; font-style: italic;">Humidifier <span id="hmd"> </span></h1>
+        </div> 
+            
+
+  <br>      <!-- enter downward -->
+  <br>
+  <br>
+
+       <hr style="width: 98%; border: 3px solid rgba(247, 4, 24, 0.952);"> 
+
+      <br> 
+
 <script>
-  //const ws = new WebSocket("ws://192.168.100.106:81/");  
+           //A <script> contains JavaScript instructions. The browser executes the JavaScript inside it.
+                const mqttBroker = "wss://3c79cba0cf534b5fad17f88c1e1eb6c1.s1.eu.hivemq.cloud:8884/mqtt";
+  // HiveMQ username
+                const mqttUsername = "esp32";
+                const mqttPassword = "estonvincentchege";
   
-        const client = mqtt.connect("wss://broker.hivemq.com:8884/mqtt");
+    // Connect to HiveMQ
+                 const client = mqtt.connect(mqttBroker, {     // First; Starts the mqtt connection 
+                 username: mqttUsername,
+                 password: mqttPassword,
+                 clientId: "Dashboard_" + Math.random().toString(16).substring(2)
+                });
 
-        const pub_topic = "chege123/home/control";
-        const sub_topic = "chege123/home/data";
+// =================================================
+// WHEN CONNECTED       https://chatgpt.com/c/6a9691bb-c42c-83ea-84e6-3b7fe7120d90
+// =================================================
+    client.on("connect", function() {          
+    console.log("Connected to HiveMQ Cloud");
+    // Subscribe to ESP32 data
+    client.subscribe("esp32/data");
+    });
 
-        client.on("connect", () => {
-        console.log("Connected");
-        client.subscribe(sub_topic);
-        });
+// =================================================
+// RECEIVE DATA FROM ESP32 esp32
+// =================================================
+client.on("message", function(topic, message) {
+if (topic === "esp32/data") {
+  // Convert MQTT message to normal text
+  let data = message.toString();
+  console.log("Received:", data);
+  // Your ESP32 sends:
+  //
+  // 1,30,37
+  //
+  // so split it at commas.
+  let values = data.split(",");
+  document.getElementById("counter").textContent = values[0];
+  document.getElementById("temp").textContent = values[1];
+  document.getElementById("hum").textContent = values[2];
+  document.getElementById("pmp").textContent = values[3];
+  document.getElementById("lmp").textContent = values[4];
+  document.getElementById("hmd").textContent = values[5];
 
-        client.on("message", (topic, message) => {
-        let data = message.toString().split(",");
+      // Change pad colors according to status
+    document.getElementById("pumpPad").style.backgroundColor = values[3] === "ON" ? "orange" : "grey";
+        //values[3] → take the 4th value received from MQTT.
+        //=== "ON" → check whether that value is exactly ON.
+        //? "green" → if it is ON, make the pad green.
+        //: "red" → otherwise, make it red.
+    document.getElementById("lampPad").style.backgroundColor = values[4] === "ON" ? "orange" : "grey";
+    document.getElementById("humidifierPad").style.backgroundColor = values[5] === "ON" ? "orange" : "grey";
+}
+});  
 
-        document.getElementById("counter").textContent = data[0];
-        document.getElementById("temp").textContent = data[1];
-        document.getElementById("hum").textContent = data[2];
-        });
-
-        function sendCommand(cmd) {
-        client.publish(pub_topic, cmd);
-        }
-    </script>
+// =================================================
+// SEND ON / OFF TO ESP32
+// =================================================
+function sendCommand(cmd) {
+client.publish(
+  "esp32/control",
+  cmd
+);
+console.log("Sent:", cmd);
+}
+</script>
 </body>
 </html>
+
+
